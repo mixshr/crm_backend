@@ -5,7 +5,7 @@ import org.mixshr.orderscontrollers.dto.OrderDTO;
 import org.mixshr.orderscontrollers.entity.OrderEntity;
 import org.mixshr.orderscontrollers.entity.UserEntity;
 import org.mixshr.orderscontrollers.repository.OrderRepository;
-import org.mixshr.orderscontrollers.utils.OrderUtils;
+import org.mixshr.orderscontrollers.utils.OrderMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -19,10 +19,11 @@ import java.util.UUID;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final OrderMapper orderMapper;
 
     public List<OrderDTO> findAllByUser(UserEntity user, int page, int size) {
        Pageable pageable = PageRequest.of(page, size, Sort.by("plannedAt"));
-       return OrderUtils.toDTO(orderRepository.findAllByUser(user, pageable).getContent());
+       return orderMapper.toDTO(orderRepository.findAllByUser(user, pageable).getContent());
     }
 
     public OrderDTO findById(UUID id) {
@@ -32,7 +33,7 @@ public class OrderService {
             return null;
         }
 
-        return OrderUtils.toDTO(order);
+        return orderMapper.toDTO(order);
     }
 
     public OrderDTO save(OrderDTO order, UserEntity user) {
@@ -44,7 +45,7 @@ public class OrderService {
                 user
         );
 
-        return OrderUtils.toDTO(orderRepository.save(orderEntity));
+        return orderMapper.toDTO(orderRepository.save(orderEntity));
     }
 
     public OrderDTO update(UUID id, OrderDTO order, UserEntity user) {
@@ -59,7 +60,7 @@ public class OrderService {
         orderEntity.setStatus(order.getStatus());
         orderEntity.setUser(user);
 
-        return OrderUtils.toDTO(orderRepository.save(orderEntity));
+        return orderMapper.toDTO(orderRepository.save(orderEntity));
     }
 
     public void delete(UUID id) {
