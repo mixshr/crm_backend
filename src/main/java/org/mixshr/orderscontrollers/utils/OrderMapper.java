@@ -30,4 +30,20 @@ public class OrderMapper {
 
         return orderDTOS;
     }
+
+    public OrderEntity toEntity(OrderDTO orderDTO) {
+        return Objects.isNull(orderDTO) ? null : modelMapper.map(orderDTO, OrderEntity.class);
+    }
+
+    public void toEntity(OrderDTO orderDTO, OrderEntity order) {
+        if (Objects.isNull(orderDTO)) {
+            throw new IllegalArgumentException("OrderDTO cannot be null");
+        }
+
+        if (Objects.isNull(order)) {
+            throw new IllegalArgumentException("Order cannot be null");
+        }
+
+        modelMapper.map(orderDTO, order);
+    }
 }

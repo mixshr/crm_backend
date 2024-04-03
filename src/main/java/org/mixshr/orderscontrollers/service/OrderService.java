@@ -37,13 +37,8 @@ public class OrderService {
     }
 
     public OrderDTO save(OrderDTO order, UserEntity user) {
-        OrderEntity orderEntity = new OrderEntity(
-                order.getTitle(),
-                order.getDescription(),
-                order.getPlannedAt(),
-                order.getStatus(),
-                user
-        );
+        OrderEntity orderEntity = orderMapper.toEntity(order);
+        orderEntity.setUser(user);
 
         return orderMapper.toDTO(orderRepository.save(orderEntity));
     }
@@ -54,10 +49,7 @@ public class OrderService {
             return null;
         }
 
-        orderEntity.setTitle(order.getTitle());
-        orderEntity.setDescription(order.getDescription());
-        orderEntity.setPlannedAt(order.getPlannedAt());
-        orderEntity.setStatus(order.getStatus());
+        orderMapper.toEntity(order, orderEntity);
         orderEntity.setUser(user);
 
         return orderMapper.toDTO(orderRepository.save(orderEntity));
