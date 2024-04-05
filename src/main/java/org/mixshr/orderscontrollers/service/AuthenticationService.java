@@ -8,6 +8,7 @@ import org.mixshr.orderscontrollers.dto.SignInDTO;
 import org.mixshr.orderscontrollers.dto.SignUpDTO;
 import org.mixshr.orderscontrollers.entity.UserEntity;
 import org.mixshr.orderscontrollers.enums.UserRole;
+import org.mixshr.orderscontrollers.utils.UserMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,14 +23,12 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
+    private final UserMapper userMapper;
 
     public JwtAuthenticationDTO signUp(SignUpDTO signUpDTO) {
-        UserEntity user = new UserEntity(
-                signUpDTO.getUsername(),
-                signUpDTO.getEmail(),
-                passwordEncoder.encode(signUpDTO.getPassword()),
-                UserRole.ROLE_USER
-        );
+        UserEntity user = userMapper.toUserEntity(signUpDTO);
+        user.setPassword(passwordEncoder.encode(signUpDTO.getPassword()));
+        user.setRole(UserRole.ROLE_USER);
 
         userService.save(user);
 

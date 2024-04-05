@@ -1,5 +1,6 @@
 package org.mixshr.orderscontrollers.utils;
 
+import lombok.AllArgsConstructor;
 import org.mixshr.orderscontrollers.dto.OrderDTO;
 import org.mixshr.orderscontrollers.entity.OrderEntity;
 import org.modelmapper.ModelMapper;
@@ -10,12 +11,9 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@AllArgsConstructor
 public class OrderMapper {
     private final ModelMapper modelMapper;
-
-    public OrderMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     public OrderDTO toDTO(OrderEntity order) {
         return Objects.isNull(order) ? null : modelMapper.map(order, OrderDTO.class);
