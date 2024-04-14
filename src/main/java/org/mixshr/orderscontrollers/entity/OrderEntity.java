@@ -3,6 +3,7 @@ package org.mixshr.orderscontrollers.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -10,6 +11,7 @@ import org.mixshr.orderscontrollers.enums.OrderStatus;
 
 import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "orders")
 @SQLRestriction("deleted_at is null")
